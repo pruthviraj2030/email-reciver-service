@@ -35,7 +35,6 @@ public class EmailListener extends MessageCountAdapter {
         IMAPFolder inbox = (IMAPFolder) store.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
 
-        // Create a new thread to keep the connection alive
         Thread keepAliveThread = new Thread(new KeepAliveRunnable(inbox), "IdleConnectionKeepAlive");
         keepAliveThread.start();
 
@@ -61,7 +60,7 @@ public class EmailListener extends MessageCountAdapter {
                 }
             }
         });
-// Start the IDLE Loop
+
         while (!Thread.interrupted()) {
             try {
                 System.out.println("Starting IDLE");
@@ -73,7 +72,7 @@ public class EmailListener extends MessageCountAdapter {
             }
         }
 
-        // Interrupt and shutdown the keep-alive thread
+
         if (keepAliveThread.isAlive()) {
             keepAliveThread.interrupt();
         }
@@ -100,10 +99,10 @@ public class EmailListener extends MessageCountAdapter {
                 }
             }
         } else if (message.isMimeType("message/rfc822")) {
-            // Handle attached messages
             printAttachments((Message) message.getContent());
         }
     }
+
     private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException, jakarta.mail.MessagingException {
         StringBuilder result = new StringBuilder();
         int count = mimeMultipart.getCount();
@@ -112,7 +111,6 @@ public class EmailListener extends MessageCountAdapter {
             if (bodyPart.isMimeType("text/plain")) {
                 result.append(bodyPart.getContent());
             } else if (bodyPart.isMimeType("text/html")) {
-                // If you prefer HTML content over plain text
                 result.append(bodyPart.getContent());
             } else if (bodyPart.getContent() instanceof MimeMultipart) {
                 result.append(getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent()));

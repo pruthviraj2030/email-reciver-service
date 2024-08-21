@@ -12,14 +12,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @SpringBootApplication
 public class EmailReceiverApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EmailReceiverApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EmailReceiverApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		ApplicationContext context = new AnnotationConfigApplicationContext(EmailConfig.class);
-		EmailListener emailListener = context.getBean(EmailListener.class);
-		emailListener.startListening();
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        ApplicationContext context = new AnnotationConfigApplicationContext(EmailConfig.class);
+        EmailListener emailListener = context.getBean(EmailListener.class);
+        emailListener.startListening();
+    }
 }
